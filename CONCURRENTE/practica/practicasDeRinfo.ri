@@ -1,0 +1,2751 @@
+
+{-------------------EJERCICIO 01 PRACTICA 1 ✅--------------}
+
+programa ejercicio1Practica1
+procesos
+{JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+areas
+  ciudad: AreaP(1,1,1,100) {privada ya que solo 1 robot pasa por ahí, recorriendo solo av1}
+  {ejercicio1b}
+robots
+  robot robot1
+  variables
+    totalFlores: numero {variable contadora de enteros}
+    cantEsqSinFlor: numero
+  comenzar
+    totalFlores:= 0
+    cantEsqSinFlor:= 0
+    repetir 99 {repito hasta llegar al final de la avenida}
+      si ~HayFlorEnLaEsquina {si NO hay flor en la esquina sumo uno a la variable contadora de esq vacias}
+        cantEsqSinFlor:= cantEsqSinFlor + 1
+      sino
+        juntarFlores (totalFlores)
+      mover
+       {lo hago otra vez aparte porque no debería moverse para no caerse de la ciudad}
+    si ~HayFlorEnLaEsquina {si NO hay flor en la esquina sumo uno a la variable contadora de esq vacias}
+      cantEsqSinFlor:= cantEsqSinFlor + 1
+    sino
+      juntarFlores (totalFlores)
+    repetir totalFlores {tantas veces como flores juntadas}
+      depositarFlor
+    Informar(totalFlores)
+    Informar(cantEsqSinFlor)
+  fin
+  
+{ PROGRAMA PRINCIPAL }
+variables 
+  r1: robot1
+comenzar
+  {AREAS ROBOTS}
+  AsignarArea (r1, ciudad)
+
+  {INICIACION}
+  Iniciar (r1, 1, 1)
+fin
+
+{---------EJERCICIO 02 PRACTICA 1 ✅----------}
+programa ejercicio2Practica1 
+procesos
+{JUNTA TODOS LOS PAPELES DE UNA ESQUINA}
+  proceso juntarPapeles (ES cantP: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantP := cantP + 1
+  fin
+  {POSICIONA EL ROBOT PARA LA IZQUIERDA}
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  
+  {JUNTA Y SE MUEVE LA CANTIDAD DE ESQUINAS REQUERIDA}
+  proceso juntarYMover(ES totalPapeles:numero)
+  comenzar
+    repetir 19 {repito hasta llegar al final de la avenida}
+      juntarPapeles(totalPapeles)
+      mover
+  fin
+areas {Av,Ca,Av,Ca}
+  ciudad1: AreaP(10,10,10,29)
+  ciudad2: AreaP(10,30,29,30)
+  ciudad3: AreaP(30,11,30,30)
+  ciudad4: AreaP(11,10,30,10)
+robots
+  robot robot1
+  variables
+    totalPapeles: numero {variable contadora de enteros}
+  comenzar
+    totalPapeles:= 0
+    juntarYMover(totalPapeles)
+       {lo hago otra vez aparte porque no debería moverse para no caerse de la ciudad}
+    juntarPapeles(totalPapeles)
+    Informar(totalPapeles)
+  fin
+
+  robot robot2
+  variables
+    totalPapeles: numero {variable contadora de enteros}
+  comenzar
+    totalPapeles:= 0
+    derecha
+    juntarYMover(totalPapeles)
+       {lo hago otra vez aparte porque no debería moverse para no caerse de la ciudad}
+    juntarPapeles(totalPapeles)
+    Informar(totalPapeles)
+  fin
+  robot robot3
+  variables
+    totalPapeles: numero {variable contadora de enteros}
+  comenzar
+    totalPapeles:= 0
+    repetir 2
+      derecha
+    juntarYMover(totalPapeles)
+      {lo hago otra vez aparte porque no debería moverse para no caerse de la ciudad}
+    juntarPapeles(totalPapeles)
+    Informar(totalPapeles)
+  fin
+
+  robot robot4
+  variables
+    totalPapeles: numero {variable contadora de enteros}
+  comenzar
+    totalPapeles:= 0
+    izquierda
+    juntarYMover(totalPapeles)
+       {lo hago otra vez aparte porque no debería moverse para no caerse de la ciudad}
+    juntarPapeles(totalPapeles)
+    Informar(totalPapeles)
+  fin
+  
+{ PROGRAMA PRINCIPAL }
+variables 
+  r1: robot1
+  r2: robot2
+  r3: robot3
+  r4: robot4
+
+comenzar
+  {AREAS ROBOTS}
+  AsignarArea (r1, ciudad1)
+  AsignarArea (r2, ciudad2)
+  AsignarArea (r3, ciudad3)
+  AsignarArea (r4, ciudad4)
+
+  {INICIACION}
+  Iniciar (r1, 10, 10) 
+  Iniciar (r2, 10, 30)
+  Iniciar (r3, 30, 30)
+  Iniciar (r4, 30, 10)
+fin
+{--------------EJERCICIO 3 - PRÁCTICA 1 ✅-------------------}
+programa ejercicio03P1
+procesos
+{JUNTA TODAS LAS FLORES DE UNA ESQUINA, CUENTA Y DEJA}
+  proceso contarFlores (ES cantF: numero)
+  variables
+    flor:numero
+  comenzar
+    flor:= 0
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor + 1
+    repetir flor
+      depositarFlor
+    cantF := cantF + flor
+  fin
+
+  {JUNTA TODOS LOS PAPELES DE UNA ESQUINA, CUENTA Y DEJA}
+  proceso contarPapeles(ES cantP: numero)
+  variables
+    papel:numero
+  comenzar 
+    papel:= 0
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel 
+      papel:=papel + 1 
+    repetir papel 
+      depositarPapel 
+    cantP:=cantP + papel
+  fin
+  {VOY ARMANDO EL ESCALON}
+  proceso recorrido(ES cantFlores:numero; ES cantPapeles:numero;E pasos:numero)
+  comenzar
+    repetir pasos {para ir armando el escalon - vertical y luego horizontal}
+      contarFlores(cantFlores)
+      contarPapeles(cantPapeles)
+      mover
+  fin
+  
+  {POSICIONA EL ROBOT PARA LA IZQUIERDA}
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso comparar (E cantF: numero; E cantP:numero; ES ok: boolean)
+  comenzar
+    ok:= F
+    si (cantP = (cantF+1))
+      ok:= V
+  fin
+  
+  proceso  armarEscalon(ES cantFlores:numero; ES cantPapeles:numero;ES pasos:numero;ES ok:boolean)
+  comenzar
+    recorrido(cantFlores, cantPapeles, pasos)
+    derecha
+    recorrido(cantFlores, cantPapeles,pasos)
+    izquierda
+    comparar(cantFlores,cantPapeles,ok)
+  fin
+areas
+  areaComun:AreaC(12,6,50,50)
+  
+robots
+  robot robot1
+  variables
+    cantFlores, cantPapeles, pasos,cantEscalones:numero
+    ok:boolean
+  comenzar
+    cantEscalones := 0
+    cantFlores :=0
+    cantPapeles := 0
+    pasos := 1
+    repetir 4 {porque son 4 escalones}
+      armarEscalon(cantFlores, cantPapeles, pasos,ok)
+      si(ok)
+        cantEscalones:=cantEscalones + 1
+      pasos:=pasos + 1
+    Informar('cantidad_de_escalones ',cantEscalones) 
+  fin
+
+{--- PROGRAMA PRINCIPAL ---}
+variables 
+  r1: robot1
+  r2: robot1
+  r3: robot1
+  
+comenzar 
+  AsignarArea (r1, areaComun)
+  AsignarArea (r2, areaComun)
+  AsignarArea (r3, areaComun)
+
+  Iniciar (r1,12,14)
+  Iniciar (r2,17,10)
+  Iniciar (r3,22,6)
+fin
+{---------------EJERCICIO4 - PRÁCTICA 1 ✅------------------------}
+programa Ejercicio04P1
+procesos
+{RECORRE LA AVENIDA JUNTANDO FLORES}
+  proceso recorrerAvenidaFlores
+  comenzar
+    repetir 99
+      juntarFlores
+      mover
+    juntarFlores
+  fin
+  
+{JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+
+{RECORRE LA AVENIDA JUNTANDO PAPELES}
+  proceso recorrerAvenidaPapeles
+  comenzar
+    repetir 99
+      juntarPapeles
+      mover
+    juntarPapeles
+  fin
+
+  {JUNTA TODOS LOS PAPELES DE UNA ESQUINA}
+  proceso juntarPapeles
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+
+areas
+  Area1: AreaP(1,1,25,100)
+  Area2: AreaP(26,1,50,100)
+  Area3: AreaP(51,1,75,100)
+  Area4: AreaP(76,1,100,100)
+robots
+  robot robotFlorero
+  comenzar
+    repetir 24
+      recorrerAvenidaFlores
+      Pos(PosAv+1,1){PosAv+1 es la avenida actual +1}
+    recorrerAvenidaFlores
+    Pos(51,1)
+    repetir 24
+      recorrerAvenidaFlores
+      Pos(PosAv+1,1){PosAv+1 es la avenida actual +1}
+    recorrerAvenidaFlores
+  fin
+  
+  robot robotPapelero
+  comenzar
+    repetir 24
+      recorrerAvenidaPapeles
+      Pos(PosAv+1,1){PosAv+1 es la avenida actual +1}
+    recorrerAvenidaPapeles
+    Pos(76,1)
+    repetir 24
+      recorrerAvenidaPapeles
+      Pos(PosAv+1,1){PosAv+1 es la avenida actual +1}
+    recorrerAvenidaPapeles
+  fin
+{--- PROGRAMA PRINCIPAL ---}
+variables
+  r1: robotFlorero {Un robot debe encargarse de las áreas impares y otro de las pares}
+  r2: robotPapelero
+
+comenzar
+  AsignarArea (r1, Area1)
+  AsignarArea (r2, Area2)
+  AsignarArea (r1, Area3)
+  AsignarArea (r2, Area4)
+
+  Iniciar (r1,1,1)
+  Iniciar (r2,26,1)
+fin
+{--------EJERCICIO 05 - PRÁCTICA 1 ✅---------}
+programa Ejercicio05p1
+procesos
+  {JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+  proceso recorrerCalleFlores(ES cantFlores:numero)
+  comenzar
+    repetir 15
+      juntarFlores(cantFlores)
+      mover
+    juntarFlores(cantFlores)
+    repetir cantFlores
+      depositarFlor
+  fin
+  
+  proceso recorrerCalleFlores2(ES cantFlores:numero)
+  comenzar
+    repetir 30
+      juntarFlores(cantFlores)
+      mover
+    juntarFlores(cantFlores)
+    repetir cantFlores
+      depositarFlor
+  fin
+  {JUNTA TODOS LOS PAPELES DE UNA ESQUINA}
+  proceso juntarPapeles (ES cantP: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantP := cantP + 1
+  fin
+  proceso recorrerAvenidaPapeles(ES cantPapeles:numero)
+  comenzar
+    repetir 20
+      juntarPapeles(cantPapeles)
+      mover
+    juntarPapeles(cantPapeles)
+    repetir cantPapeles
+      depositarPapel
+  fin
+  proceso recorrerAvenidaPapeles2(ES cantPapeles:numero)
+  comenzar
+    repetir 10
+      juntarPapeles(cantPapeles)
+      mover
+    juntarPapeles(cantPapeles)
+    repetir cantPapeles
+      depositarPapel
+  fin
+areas
+  area1a: AreaP(1,75,16,75)
+  area1b: AreaP(1,80,16,80)
+  area2a: AreaP(75,80,75,100)
+  area2b: AreaP(80,80,80,100)
+  area3a: AreaP(70,15,100,15)
+  area3b: AreaP(70,10,100,10)
+  area4a: AreaP(10,1,10,11)
+  area4b: AreaP(15,1,15,11)
+
+robots
+  robot robot1
+  variables
+    cantFlores,Av:numero
+  comenzar
+    cantFlores:= 0
+    derecha {SIEMPRE QUE ME MUEVO POR CALLE DEBO GIRAR A LA DERECHA!!!}
+    Av:= PosAv
+    recorrerCalleFlores(cantFlores)
+    cantFlores:= 0
+    Pos(Av,PosCa+5)
+    recorrerCalleFlores(cantFlores)
+  fin
+  
+  robot robot2
+  variables
+    cantPapeles,Ca:numero
+  comenzar
+    cantPapeles:= 0
+    Ca:= PosCa
+    recorrerAvenidaPapeles(cantPapeles)
+    cantPapeles:= 0
+    Pos(PosAv+5,Ca)
+    recorrerAvenidaPapeles(cantPapeles)
+  fin
+  
+  robot robot3
+  variables
+    cantFlores,Av:numero
+  comenzar
+    cantFlores:= 0
+    derecha {SIEMPRE QUE ME MUEVO POR CALLE DEBO GIRAR A LA DERECHA!!!}
+    Av:= PosAv
+    recorrerCalleFlores2(cantFlores)
+    cantFlores:= 0    
+    Pos(Av,PosCa+5)
+    recorrerCalleFlores2(cantFlores)
+  fin
+  robot robot4
+  variables
+    cantPapeles,Ca:numero
+  comenzar
+    cantPapeles:= 0
+    Ca:= PosCa
+    recorrerAvenidaPapeles2(cantPapeles)
+    cantPapeles:= 0
+    Pos(PosAv+5,Ca)
+    recorrerAvenidaPapeles2(cantPapeles)
+  fin
+  {-- PROGRAMA PRINCIPAL--}
+variables 
+  r1: robot1
+  r2: robot2
+  r3: robot3
+  r4: robot4
+  
+comenzar
+  {AREA ROBOTS}
+  AsignarArea(r1, area1a)
+  AsignarArea(r1,area1b)
+  AsignarArea(r2,area2a)
+  AsignarArea(r2,area2b)
+  AsignarArea(r3,area3a)
+  AsignarArea(r3,area3b)
+  AsignarArea(r4,area4a)
+  AsignarArea(r4,area4b)
+  
+  {INICIACION}
+  Iniciar(r1,1,75)
+  Iniciar(r2,75,80)
+  Iniciar(r3,70,10)
+  Iniciar(r4,10,1)
+fin
+
+{jercicio1dPractica2}
+programa ejercicio1dPractica2
+
+procesos 
+  {JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+
+  proceso recorrerAvenidaFlores(ES cantF: numero)
+  comenzar
+    repetir 9
+      juntarFlores(cantF)
+      mover
+    juntarFlores(cantF)
+  fin
+  proceso calcularMaximo(E cantF: numero; ES max: numero;E id: numero; ES idGanador: numero)
+  comenzar
+    si (cantF > max)
+      max:= cantF
+      idGanador:= id
+  fin
+
+areas
+ {AREAS DE TRABAJO / AREAS DE EQUIPO}
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  areaJefe: AreaP(2,1,2,1)
+  area3: AreaP(3,21,3,30)
+  area4: AreaP(4,31,4,40)
+  area5: AreaP(5,41,5, 50)
+  area6: AreaP(6,51,6,60)
+
+robots
+  robot robotFlorero
+  variables
+    cantF, quienSoy:numero
+  comenzar
+    cantF:= 0
+    RecibirMensaje(quienSoy,rFiscalizador)
+    Informar(quienSoy)
+    recorrerAvenidaFlores(cantF) {identifico porque me lo pide}
+    EnviarMensaje(quienSoy,rFiscalizador)  
+    EnviarMensaje(cantF, rFiscalizador)
+  fin
+
+  robot robotFiscalizador
+  variables
+    cantF,max,id,idGanador: numero
+  comenzar
+{no asigno nro a cada robot porqu no me lo pide}
+    max:= -1
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    EnviarMensaje(5,r5)
+    EnviarMensaje(6,r6)
+    repetir 6 
+      RecibirMensaje(id,*)
+      Informar(id)
+      si (id = 1)
+        RecibirMensaje(cantF,r1)
+      sino 
+        si (id = 2)
+          RecibirMensaje(cantF,r2)
+        sino
+          si (id = 3)
+            RecibirMensaje(cantF,r3) 
+          sino 
+            si (id = 4)
+              RecibirMensaje(cantF,r4) 
+            sino
+              si (id = 5)
+                RecibirMensaje(cantF,r5)
+              sino 
+                RecibirMensaje(cantF,r6)
+      calcularMaximo(cantF,max,id, idGanador)
+    Informar ('gano_robot',idGanador) 
+    Informar('cantidad',max)
+  fin
+{ PROGRAMA PRINCIPAL }
+variables 
+  r1: robotFlorero
+  r2: robotFlorero
+  r3: robotFlorero
+  r4: robotFlorero
+  r5: robotFlorero
+  r6: robotFlorero
+  rFiscalizador: robotFiscalizador
+comenzar
+
+  {AREAS ROBOTS}
+  AsignarArea (r1, area1)
+  AsignarArea (r2, area2)
+  AsignarArea (r3, area3)
+  AsignarArea (r4, area4)
+  AsignarArea (r5, area5)
+  AsignarArea (r6, area6)
+  AsignarArea (rFiscalizador, areaJefe)
+
+  {INICIACION}
+  Iniciar (r1, 1, 1)
+  Iniciar (r2, 2, 11)
+  Iniciar (r3, 3, 21)
+  Iniciar (r4, 4, 31)
+  Iniciar (r5, 5, 41)
+  Iniciar (r6, 6, 51)
+  Iniciar(rFiscalizador,2,1)
+fin
+
+{---------EJERCICIO 2 PRÁCTICA 2✅---------}
+programa ejercicio02P2
+procesos
+  {JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+
+  {JUNTA TODOS LOS PAPELES DE UNA ESQUINA}
+  proceso juntarPapeles (ES cantP: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantP := cantP + 1
+  fin
+  proceso calcularmasFloresQuePapeles(E cantF:numero; E cantP:numero ;ES cantEscalones:numero)
+  comenzar
+    si(cantF > cantP)
+      cantEscalones:=cantEscalones + 1
+  fin
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+
+  proceso recorrerEscalon(ES cantEscalones: numero)
+  variables
+    cantF, cantP,alto:numero
+  comenzar
+    cantF:=0 
+    cantP:=0
+    Random(alto,1,5)
+    repetir alto
+      juntarPapeles(cantP)
+      juntarFlores(cantF)
+      mover
+    juntarPapeles(cantP)
+    juntarFlores(cantF)
+    calcularmasFloresQuePapeles(cantF,cantP,cantEscalones)
+    derecha
+    mover
+    izquierda
+  fin
+  
+areas
+{AREAS INICIO / AREA JEFE}
+  areaRobotJefe: AreaP (1,1,1,1)
+
+ {AREAS DE TRABAJO / AREAS DE EQUIPO}
+  area1: AreaP(2,1,6,20)
+  area2: AreaP(7,1,11,20)
+  area3: AreaP(12,1,16,20)
+robots
+  robot recolector
+  variables
+    cantEscalones:numero
+  comenzar
+    cantEscalones:=0
+    repetir 4 {porque son 4 escalones}
+      recorrerEscalon(cantEscalones)
+    EnviarMensaje(cantEscalones,jefe)
+  fin
+  
+  robot rJefe
+  variables
+    totalEscalones,escalon:numero
+  comenzar
+    totalEscalones:= 0
+    repetir 3 {ya que no me importa de quien viene puedo ir sumando a medida que recibo}
+      RecibirMensaje(escalon,*)
+      totalEscalones:= totalEscalones + escalon
+    Informar(totalEscalones) {informa antes de finalizar los recorridos}
+  fin
+{-- PROGRAMA PRINCIPAL --}
+variables
+  r1: recolector
+  r2: recolector
+  r3: recolector
+  jefe: rJefe
+comenzar
+{ASIGNAR AREA A LOS ROBOTS}
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(jefe,areaRobotJefe)
+  
+{INICIALIZACION}
+  Iniciar(r1,2,1)
+  Iniciar(r2,7,1)
+  Iniciar(r3,12,1)
+  Iniciar(jefe,1,1)
+fin
+
+{---------EJERCICIO 1 PRACTICA 3 ✅------------}
+programa ejercicio01P3
+procesos
+{JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+
+  {JUNTA TODOS LOS PAPELES DE UNA ESQUINA}
+  proceso juntarPapeles (ES cantP: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantP := cantP + 1
+  fin
+
+areas
+  {AREA DE TRABAJO}
+  areaFlorero: AreaPC(1,1,5,10)
+  areaPapelero: AreaPC(6,1,10,9)
+  
+  {AREA DE INICIO}
+  areaIFlorero1: AreaP(6,10,6,10)
+  areaIFlorero2: AreaP(7,10,7,10)
+  areaIPapelero1: AreaP(8,10,8,10)
+  areaIPapelero2: AreaP(9,10,9,10)
+  
+  {AREA DE INICIO}
+  areaFin: AreaC(10,10,10,10)
+robots
+  robot florero
+  variables
+    cantF,av,ca,avR,caR:numero
+  comenzar
+    cantF:=0
+    av:=PosAv
+    ca:=PosCa
+    repetir 5
+      Random(avR,1,5)
+      Random(caR,1,10)
+      BloquearEsquina(avR,caR)
+      Pos(avR,caR)
+      juntarFlores(cantF)
+      Pos(av,ca)
+      LiberarEsquina(avR,caR)
+    repetir cantF
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(av,ca)
+      LiberarEsquina(10,10)
+  fin
+  
+  robot papelero
+  variables
+    cantP,av,ca,avR,caR:numero
+  comenzar
+    cantP:=0
+    av:=PosAv
+    ca:=PosCa
+    repetir 3
+      Random(avR,6,10)
+      Random(caR,1,9)
+      BloquearEsquina(avR,caR)
+      Pos(avR,caR)
+      juntarPapeles(cantP)
+      Pos(av,ca)
+      LiberarEsquina(avR,caR)
+    repetir cantP
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarPapel
+      Pos(av,ca)
+      LiberarEsquina(10,10)
+  fin
+  
+{-- PROGRAMA PRINCIPAL --}
+variables
+  r1:florero
+  r2:florero
+  r3:papelero
+  r4:papelero
+  
+comenzar
+{AREAS ROBOTS}
+  AsignarArea (r1, areaFlorero)
+  AsignarArea (r2, areaFlorero)
+  AsignarArea (r3, areaPapelero)
+  AsignarArea (r4, areaPapelero)
+
+  AsignarArea (r1, areaIFlorero1)
+  AsignarArea (r2, areaIFlorero2)
+  AsignarArea (r3, areaIPapelero1)
+  AsignarArea (r4, areaIPapelero2)
+
+  AsignarArea (r1, areaFin)
+  AsignarArea (r2, areaFin)
+  AsignarArea (r3, areaFin)
+  AsignarArea (r4, areaFin)
+
+  {INICIACION}
+  Iniciar (r1, 6, 10)
+  Iniciar (r2, 7, 10)
+  Iniciar (r3, 8, 10)
+  Iniciar (r4, 9, 10)
+fin
+
+{--------ejercicio01P2------------}
+programa ejercicio01P2
+procesos
+  {JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+  
+  proceso recorrerAvenidaFlores(ES cantF: numero)
+  comenzar
+    repetir 9
+      juntarFlores(cantF)
+      mover
+    juntarFlores(cantF)
+  fin
+  
+areas
+  Area1: AreaP(1,1,1,10)
+  Area2: AreaP(2,11,2,20)
+robots
+  robot robot1Florero
+  variables
+    cantFlores1,cantFlores2,diferencia:numero
+  comenzar
+    cantFlores1:= 0
+    diferencia:= 0
+    recorrerAvenidaFlores(cantFlores1)
+    EnviarMensaje(cantFlores1, r2)
+    RecibirMensaje(cantFlores2, r2)
+    si (cantFlores1 > cantFlores2)
+      diferencia:= (cantFlores1 - cantFlores2)
+      Informar('GANE_R1',diferencia)
+  fin
+  robot robot2Florero
+  variables
+    cantFlores1,cantFlores2,diferencia:numero
+  comenzar
+    cantFlores2:= 0
+    diferencia:= 0
+    recorrerAvenidaFlores(cantFlores2)
+    EnviarMensaje(cantFlores2, r1)
+    RecibirMensaje(cantFlores1, r1)
+    si (cantFlores2 > cantFlores1)
+      diferencia:= (cantFlores2 - cantFlores1)
+      Informar('GANE_R2',diferencia)
+  fin
+{-- Programa principal--}
+variables
+  r1:robot1Florero
+  r2:robot2Florero
+comenzar
+{ASIGNAR AREAS}
+  AsignarArea(r1,Area1)
+  AsignarArea(r2,Area2)
+  
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,11)
+fin
+
+{----------EJERCICIO 3 PRACTICA 3-------------}
+programa ejercicio03P3
+procesos
+  {ENVIA LOS IDENTIFICADORES A LOS ROBOTS}
+  proceso enviarId
+  comenzar
+    EnviarMensaje (1, r1)
+    EnviarMensaje (2, r2)
+    EnviarMensaje (3, r3)
+    EnviarMensaje (4, r4)
+  fin
+
+  {JUNTA UNA FLOR. SI NO HAY ACTUALIZA UN BOOLEANO}
+  proceso juntarFlores (ES cantF:numero;ES hayFlor: boolean)
+  comenzar
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF:= cantF+1
+    sino
+      hayFlor := F
+  fin
+
+
+  {CALCULO MAXIMO}
+  proceso calcularMaximo(E id:numero;ES idMax:numero; E max: numero;E cantF: numero)
+  comenzar
+    si (cantF > max)
+      max := cantF
+      idMax := id
+  fin
+  proceso enviarEsquina(E avR:numero; E caR:numero)
+  comenzar
+    EnviarMensaje(avR,r1)
+    EnviarMensaje(avR,r2)
+    EnviarMensaje(avR,r3)
+    EnviarMensaje(avR,r4)
+    
+    EnviarMensaje(caR,r1)
+    EnviarMensaje(caR,r2)
+    EnviarMensaje(caR,r3)
+    EnviarMensaje(caR,r4)
+  fin
+areas
+  areaBusqueda:AreaPC(2,2,10,10)
+  areaInicio1: AreaP(2,1,2,1)
+  areaInicio2: AreaP(3,1,3,1)
+  areaInicio3: AreaP(4,1,4,1)
+  areaInicio4: AreaP(5,1,5,1)
+  areaJefe: AreaP(1,1,1,1)
+robots
+  robot rFlorero
+  variables
+    id,cantF,avR,caR,Av,Ca:numero
+    hayFlor:boolean
+  comenzar
+    hayFlor:=V
+    Av:=PosAv
+    Ca:=PosCa
+    RecibirMensaje(id,rJ)
+    RecibirMensaje(avR,rJ)
+    RecibirMensaje(caR,rJ)
+    mientras (hayFlor = V)
+      BloquearEsquina(avR,caR)
+      Pos(avR,caR)
+      juntarFlores(cantF,hayFlor)
+      Pos(Av,Ca)
+      LiberarEsquina(avR,caR)
+    EnviarMensaje(id,rJ)
+    EnviarMensaje(cantF,rJ)
+  fin
+
+  robot rJefe
+  variables
+    id,idMax,max,cantF,avR,caR:numero
+  comenzar
+    max:=-1
+    enviarId
+    Random(avR,2,10)
+    Random(caR,2,10)
+    enviarEsquina(avR,caR)
+    repetir 4
+      RecibirMensaje(id, *)
+      si (id = 1)
+        RecibirMensaje(cantF, r1)
+      sino
+        si (id = 2)
+          RecibirMensaje(cantF, r2)
+        sino
+          si (id = 3)
+            RecibirMensaje(cantF, r3)
+          sino
+            RecibirMensaje(cantF, r4)
+    calcularMaximo(id,idMax,max,cantF)
+    Informar(idMax)
+  fin
+
+{--- PROGRAMA PRINCIPAL ---}
+variables 
+  r1: rFlorero
+  r2: rFlorero
+  r3: rFlorero
+  r4: rFlorero
+  rJ: rJefe
+comenzar 
+  AsignarArea (r1, areaBusqueda)
+  AsignarArea (r1, areaInicio1)
+  AsignarArea (r2, areaBusqueda)
+  AsignarArea (r2, areaInicio2)
+  AsignarArea (r3, areaBusqueda)
+  AsignarArea (r3, areaInicio3)
+  AsignarArea (r4, areaBusqueda)
+  AsignarArea (r4, areaInicio4)
+  AsignarArea (rJ,areaJefe)
+
+  Iniciar (r1,2,1)
+  Iniciar (r2,3,1)
+  Iniciar (r3,4,1)
+  Iniciar (r4,5,1)
+  Iniciar (rJ,1,1)
+fin
+
+{------EJERCICIO4A - PRACTICA 3✅-----------}
+
+programa ejercicio04P3
+procesos
+  {ENVIA LOS IDENTIFICADORES A LOS ROBOTS}
+  proceso enviarId
+  comenzar
+    EnviarMensaje (1, r1)
+    EnviarMensaje (2, r2)
+    EnviarMensaje (3, r3)
+    EnviarMensaje (4, r4)
+  fin
+  
+  proceso juntarFlor(ES termine: boolean)
+  comenzar
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+    sino
+      termine:= V
+  fin
+{JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+areas
+  areaBusqueda:AreaPC(10,10,10,10)
+  areaFin:AreaC(11,11,11,11)
+  areaInicio1: AreaP(9,9,9,9)
+  areaInicio2: AreaP(9,10,9,10)
+  areaInicio3: AreaP(9,11,9,11)
+  areaInicio4: AreaP(9,12,9,12)
+  areaJefe: AreaP(1,1,1,1)
+robots
+  robot rFlorero
+  variables
+    id,Av,Ca:numero
+    termine: boolean
+  comenzar
+    termine:= F
+    Av:= PosAv
+    Ca:= PosCa
+    RecibirMensaje( id,rJ)
+    mientras (termine = F) {mientras no termine porque hay flores bloqueo, voy y junto}
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      juntarFlor(termine)
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      LiberarEsquina(10,10)
+      si (termine = F) {si esta en F la esquina todavia tiene, y deposito de a una}
+        depositarFlor
+      Pos(Av,Ca)
+      LiberarEsquina(11,11)
+    {no hace falta el si termine = V porque por eso saldria del bucle}
+    EnviarMensaje(id,rJ)
+  fin
+
+  robot rJefe
+  variables
+    id:numero
+    termine: boolean
+  comenzar
+    enviarId
+    repetir 4
+      RecibirMensaje(id,*)
+    Informar ('ULTIMO',id)
+    Pos(11,11)
+    juntarFlores
+    Pos(1,1)
+  fin
+{--- PROGRAMA PRINCIPAL ---}
+variables 
+  r1: rFlorero
+  r2: rFlorero
+  r3: rFlorero
+  r4: rFlorero
+  rJ: rJefe
+comenzar 
+  AsignarArea (r1, areaFin)
+  AsignarArea (r1, areaBusqueda)
+  AsignarArea (r1, areaInicio1)
+  AsignarArea (r2, areaFin)
+  AsignarArea (r2, areaBusqueda)
+  AsignarArea (r2, areaInicio2)
+  AsignarArea (r3, areaFin)
+  AsignarArea (r3, areaBusqueda)
+  AsignarArea (r3, areaInicio3)
+  AsignarArea (r4, areaFin)
+  AsignarArea (r4, areaBusqueda)
+  AsignarArea (r4, areaInicio4)
+  AsignarArea (rJ,areaJefe)
+  AsignarArea (rJ,areaFin)
+  
+  Iniciar (r1,9,9)
+  Iniciar (r2,9,10)
+  Iniciar (r3,9,11)
+  Iniciar (r4,9,12)
+  Iniciar (rJ,1,1)
+fin
+
+{-------EJERCICIO4B - PRÁCTICA 3 ✅--------}
+
+programa ejercicio04P3
+procesos
+  {ENVIA LOS IDENTIFICADORES A LOS ROBOTS}
+  proceso enviarId
+  comenzar
+    EnviarMensaje (1, r1)
+    EnviarMensaje (2, r2)
+    EnviarMensaje (3, r3)
+    EnviarMensaje (4, r4)
+  fin
+  
+  proceso juntarFlor(ES termine: boolean)
+  comenzar
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+    sino
+      termine:= V
+  fin
+{JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+areas
+  areaBusqueda:AreaPC(10,10,10,10)
+  areaFin:AreaC(11,11,11,11)
+  areaInicio1: AreaP(9,9,9,9)
+  areaInicio2: AreaP(9,10,9,10)
+  areaInicio3: AreaP(9,11,9,11)
+  areaInicio4: AreaP(9,12,9,12)
+  areaJefe: AreaP(1,1,1,1)
+robots
+  robot rFlorero
+  variables
+    id,Av,Ca:numero
+    termine: boolean
+  comenzar
+    termine:= F
+    Av:= PosAv
+    Ca:= PosCa
+    RecibirMensaje( id,rJ)
+    mientras (termine = F) {mientras no termine porque hay flores bloqueo, voy y junto}
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      juntarFlor(termine)
+      si (termine = F )
+        Pos(Av,Ca)
+        LiberarEsquina(10,10)
+        BloquearEsquina(11,11)
+        depositarFlor
+        Pos(Av,Ca)
+        LiberarEsquina(10,10)
+        EnviarMensaje(id,rJ)         
+      sino  
+        Pos(Av,Ca)
+        EnviarMensaje(id,rJ)
+        LiberarEsquina(10,10)
+  fin
+
+  robot rJefe
+  variables
+    id:numero
+    termine: boolean
+  comenzar
+    enviarId
+    repetir 4
+      RecibirMensaje(id,*)
+    Informar ('ULTIMO',id)
+    Pos(11,11)
+    juntarFlores
+    Pos(1,1)
+  fin
+{--- PROGRAMA PRINCIPAL ---}
+variables 
+  r1: rFlorero
+  r2: rFlorero
+  r3: rFlorero
+  r4: rFlorero
+  rJ: rJefe
+comenzar 
+  AsignarArea (r1, areaFin)
+  AsignarArea (r1, areaBusqueda)
+  AsignarArea (r1, areaInicio1)
+  AsignarArea (r2, areaFin)
+  AsignarArea (r2, areaBusqueda)
+  AsignarArea (r2, areaInicio2)
+  AsignarArea (r3, areaFin)
+  AsignarArea (r3, areaBusqueda)
+  AsignarArea (r3, areaInicio3)
+  AsignarArea (r4, areaFin)
+  AsignarArea (r4, areaBusqueda)
+  AsignarArea (r4, areaInicio4)
+  AsignarArea (rJ,areaJefe)
+  AsignarArea (rJ,areaFin)
+  
+  Iniciar (r1,9,9)
+  Iniciar (r2,9,10)
+  Iniciar (r3,9,11)
+  Iniciar (r4,9,12)
+  Iniciar (rJ,1,1)
+fin
+
+{--------ejercicio01Practica4 ✅---------}
+programa ejercicio01Practica4 
+procesos
+  {ENVIA LOS IDENTIFICADORES A LOS ROBOTS}
+  proceso enviarId
+  comenzar
+    EnviarMensaje (1, r1)
+    EnviarMensaje (2, r2)
+    EnviarMensaje (3, r3)
+  fin
+
+{JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (E cantF: numero)
+  comenzar
+    repetir cantF
+      tomarFlor
+  fin
+
+areas
+
+ {AREAS INICIO / AREA JEFE}
+  areaRobotJefe: AreaP(100,100, 100, 100)
+ {AREAS DE TRABAJO / AREAS DE EQUIPO}
+  areaCliente1: AreaPC(1,1,1,100)
+  areaCliente2: AreaPC(2,1,2,100)
+  areaCliente3: AreaPC(3,1,3,100)
+
+robots
+  robot cliente
+  variables
+    id,cantF,av,caSiguiente:numero
+    ok:boolean
+  comenzar
+    RecibirMensaje(id,rJefe)
+    mientras (PosCa < 100)
+      av := PosAv
+      caSiguiente := PosCa + 1
+      Random(cantF,1,4)
+      EnviarMensaje(id,rJefe)
+      EnviarMensaje(cantF,rJefe)
+      EnviarMensaje(av,rJefe)
+      EnviarMensaje(caSiguiente,rJefe)
+      RecibirMensaje(ok,rJefe)
+      Pos(av,caSiguiente)
+      juntarFlores(cantF)
+      Pos(av,caSiguiente-1) {volver a la calle anterior}
+      mientras((cantF > 0) & (PosCa < 100))
+        depositarFlor
+        mover
+        cantF:= cantF - 1 
+    EnviarMensaje(0,rJefe) {para ir contando la cantidad de robots que termino}
+  fin
+
+  robot servidor
+  variables
+    ack:boolean
+    id,cantF,cantFin,av,ca: numero 
+  comenzar
+    cantFin:= 0
+    ack:= V
+    enviarId
+    mientras(cantFin <> 3)
+      RecibirMensaje(id,*)
+      si (id <> 0)
+        si (id =1)
+          RecibirMensaje(cantF,r1){recibo la cantidad y empiezo a servir}
+          RecibirMensaje(av,r1)
+          RecibirMensaje(ca,r1)
+        sino
+          si(id=2)
+            RecibirMensaje(cantF,r2)
+            RecibirMensaje(av,r2)
+            RecibirMensaje(ca,r2)
+          sino
+            RecibirMensaje(cantF,r3)
+            RecibirMensaje(av,r3)
+            RecibirMensaje(ca,r3)
+        Pos(av,ca)
+        repetir cantF
+          depositarFlor
+        Pos(100,100)
+        si (id = 1)
+          EnviarMensaje(ack,r1)
+        sino
+          si(id = 2)
+            EnviarMensaje(ack,r2)
+          sino
+            EnviarMensaje(ack,r3)
+      sino
+        cantFin:= cantFin + 1
+  fin
+ 
+
+{ PROGRAMA PRINCIPAL }
+variables 
+  rJefe: servidor
+  r1: cliente
+  r2: cliente
+  r3: cliente
+comenzar
+  {AREA JEFE}
+  AsignarArea (rJefe, areaRobotJefe)
+
+  {AREAS ROBOTS}
+  AsignarArea (r1, areaCliente1)
+  AsignarArea (r2, areaCliente2)
+  AsignarArea (r3, areaCliente3)
+  AsignarArea (rJefe, areaCliente1)
+  AsignarArea (rJefe, areaCliente2)
+  AsignarArea (rJefe, areaCliente3)
+
+  {INICIACION}
+  Iniciar (rJefe, 100, 100)
+  Iniciar (r1, 1, 1)
+  Iniciar (r2, 2, 1)
+  Iniciar (r3, 3, 1)
+fin
+
+{----PARCIALES-----}
+
+programa parcialTurnoC✅
+procesos
+   {ENVIA LOS IDENTIFICADORES A LOS ROBOTS}
+  proceso enviarID
+  comenzar
+    EnviarMensaje (1, r1)
+    EnviarMensaje (2, r2)
+    EnviarMensaje (3, r3)
+  fin
+
+{JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+  
+  {GENERA UN CUADRADO, EL ROBOT VA JUNTANDO FLORES}
+  proceso hacerCuadrado (ES cantF: numero;E lado: numero)
+  comenzar
+    repetir 4
+      repetir lado
+        juntarFlores(cantF)
+        mover
+      derecha
+  fin
+
+  proceso depositarFlores
+  variables
+    av,ca:numero
+  comenzar
+    av:= PosAv
+    ca:= PosCa
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    depositarFlor
+    Pos(av,ca)
+    LiberarEsquina(50,50)
+  fin
+areas
+  areaR1: AreaP(1,1,6,26)
+  areaR2: AreaP(8,1,13,26)
+  areaR3: AreaP(15,1,20,26)
+  
+  areaDeposito: AreaPC(50,50,50,50)
+  
+  areaJefe: AreaP(51,1,51,1)
+
+robots
+  robot recolector
+  variables
+    id,cantF,lado:numero
+    termine:boolean
+  comenzar
+    cantF:= 0
+    termine:= V
+    RecibirMensaje(id,rJefe)
+    repetir 5
+      Random(lado,1,5)
+      hacerCuadrado(cantF,lado)
+      Pos(PosAv,PosCa+lado+1)
+      si (id = 1)
+        EnviarMensaje(termine,r2)
+        EnviarMensaje(termine,r3)
+      sino
+        si (id = 2)
+          EnviarMensaje(termine, r1)
+          EnviarMensaje(termine, r3)
+        sino
+          EnviarMensaje(termine, r1)
+          EnviarMensaje(termine, r2)
+      repetir 2
+        RecibirMensaje(termine,*)
+    repetir cantF
+      depositarFlores
+  fin
+
+  
+  robot coordinador
+  comenzar
+    enviarID
+  fin
+
+{--- PROGRAMA PRINCIPAL ---}
+variables 
+  r1: recolector
+  r2: recolector
+  r3: recolector
+  rJefe: coordinador
+comenzar 
+  AsignarArea (r1, areaR1)
+  AsignarArea (r1, areaDeposito)
+  AsignarArea (r2, areaR2)
+  AsignarArea (r2, areaDeposito)
+  AsignarArea (r3, areaR3)
+  AsignarArea (r3, areaDeposito)
+  AsignarArea (rJefe, areaJefe)
+
+  Iniciar(r1,1,1)
+  Iniciar(r2,8,1)
+  Iniciar(r3,15,1)
+  Iniciar(rJefe,51,1)
+fin
+
+{parcialTurnoF ✅}
+programa parcialTurnoF 
+procesos
+{ENVIA LOS IDENTIFICADORES A LOS ROBOTS}
+  proceso enviarID
+  comenzar
+    EnviarMensaje (1, a1)
+    EnviarMensaje (2, a2)
+    EnviarMensaje (3, b1)
+    EnviarMensaje (4, b2)
+  fin
+
+    {JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+  
+  proceso depositarFlores
+  variables
+    av,ca:numero
+  comenzar
+    av:= PosAv
+    ca:= PosCa
+    BloquearEsquina(20,20)
+    Pos(20,20)
+    depositarFlor
+    Pos(av,ca)
+    LiberarEsquina(20,20)
+  fin
+
+  proceso recorrerAvenida(ES cantF:numero)
+  comenzar
+    repetir 9
+      juntarFlores(cantF)
+      mover
+    juntarFlores(cantF)
+  fin
+  
+  proceso recorrerCalle(ES cantF:numero)
+  comenzar
+    juntarFlores(cantF)
+    repetir 9
+      juntarFlores(cantF)
+      mover
+  fin
+areas
+  AreaA1a: AreaP(1,1,1,9)
+  AreaA1b: AreaP(1,10,10,10)
+  AreaA2a: AreaP(11,2,11,10)
+  AreaA2b: AreaP(2,1,11,1)
+  AreaB1a: AreaP(13,1,13,9)
+  AreaB1b: AreaP(13,10,22,10)
+  AreaB2a: AreaP(23,2,23,10)
+  AreaB2b: AreaP(14,1,23,1)
+  
+  AreaDeposito: AreaPC(20,20,20,20)
+  
+  AreaJefe: AreaP(30,1,30,1)
+robots
+  robot recolector1
+  variables
+    id,cantF:numero
+    ok:boolean
+  comenzar
+    cantF:=0
+    RecibirMensaje(id, rJefe)
+    recorrerAvenida(cantF)
+    derecha
+    recorrerCalle (cantF)
+    si (id = 1)
+      EnviarMensaje(ok, a2)
+    sino
+      si (id = 3)
+        EnviarMensaje(ok, b2)
+    EnviarMensaje(id, rJefe)
+    EnviarMensaje (cantF, rJefe)
+    repetir cantF
+      depositarFlores
+  fin
+  
+  robot recolector2
+  variables
+    id,cantF:numero
+    ok:boolean
+  comenzar
+    cantF:=0
+    RecibirMensaje(id, rJefe)
+    si (id = 2)  
+      RecibirMensaje(ok, a1)
+    sino
+      si (id = 4)  
+        RecibirMensaje(ok, b1)
+    repetir 2
+      derecha
+    recorrerAvenida(cantF)
+    derecha
+    recorrerCalle (cantF)
+    EnviarMensaje(id, rJefe)
+    EnviarMensaje (cantF, rJefe)
+    repetir cantF
+      depositarFlores
+  fin
+  
+  robot fiscalizador
+  variables
+    id,cantF,totalA,totalB:numero
+  comenzar
+    enviarID
+    repetir 4
+      RecibirMensaje (id, *)
+      si (id = 1)
+        RecibirMensaje (cantF, a1)
+        totalA:= totalA + cantF
+      sino
+        si (id = 2)
+          RecibirMensaje (cantF, a2)
+          totalA:= totalA + cantF
+        sino
+          si (id = 3)
+            RecibirMensaje (cantF, b1)
+            totalB:= totalB + cantF
+          sino { si ( id = 4) }
+            RecibirMensaje (cantF, b2)
+            totalB:= totalB + cantF
+    si (totalA > totalB)
+      Informar('GANO_A', totalA)
+    sino { si ( id = 4) }
+      Informar('GANO_B', totalB)
+  fin
+variables
+  a1: recolector1
+  a2: recolector2
+  b1: recolector1
+  b2: recolector2
+  rJefe: fiscalizador
+comenzar
+  {ASIGNAR AREAS}
+  AsignarArea (a1, AreaA1a)
+  AsignarArea (a1, AreaA1b)
+  AsignarArea (a1, AreaDeposito)
+  AsignarArea (a2, AreaA2a)
+  AsignarArea (a2, AreaA2b)
+  AsignarArea (a2, AreaDeposito)
+  AsignarArea (b1, AreaB1a)
+  AsignarArea (b1, AreaB1b)
+  AsignarArea (b1, AreaDeposito)
+  AsignarArea (b2, AreaB2a)
+  AsignarArea (b2, AreaB2b)
+  AsignarArea (b2, AreaDeposito)
+  AsignarArea ( rJefe, AreaJefe)
+  
+  {INICIALIZACIONES}
+  Iniciar (a1, 1,1)
+  Iniciar (a2, 11,10)
+  Iniciar (b1, 13,1)
+  Iniciar (b2,23,10)
+
+  Iniciar (rJefe, 30, 1)
+fin
+
+{ejercicio03p4
+este está bien PERO hay que modularizar pero me costó tanto entender que preferí primero hacer y 
+después lo modularizaré}
+este está bien PERO hay que modularizar pero me costó tanto entender que preferí primero hacer y después lo modularizaré
+programa ejercicio03p4
+procesos
+{ENVIA LOS IDENTIFICADORES A LOS ROBOTS}
+  proceso enviarID
+  comenzar
+    EnviarMensaje (1, r1)
+    EnviarMensaje (2, r2)
+    EnviarMensaje (3, r3)
+  fin
+
+
+  {JUNTA TODOS LOS PAPELES DE UNA ESQUINA}
+  proceso juntarPapeles (ES cantP: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantP := cantP + 1
+  fin
+areas
+  AreaAv1: AreaP(1,1,1,100)
+  AreaAv2: AreaP(2,1,2,100)
+  AreaAv3: AreaP(3,1,3,100)
+  
+  AreaJefe: AreaP(4,1,4,1)  
+robots
+  robot recolector
+  variables
+    id, cantP:numero
+    ok:boolean
+  comenzar
+    ok:=V
+    cantP:= 0
+    RecibirMensaje(id,rJ)
+    repetir 19
+      repetir 5
+        juntarPapeles(cantP)
+        mover
+      si (id = 1)
+        EnviarMensaje(ok,r2)
+        EnviarMensaje(ok,r3)
+      sino
+        si (id = 2)
+          EnviarMensaje(ok, r1)
+          EnviarMensaje(ok, r3)
+        sino
+          EnviarMensaje(ok, r1)
+          EnviarMensaje(ok, r2)
+      repetir 2
+        RecibirMensaje(ok,*)
+    repetir 4
+      juntarPapeles(cantP)
+      mover
+    juntarPapeles(cantP)
+    si (id=1)
+      EnviarMensaje(ok,r2)
+      EnviarMensaje(ok,r3)
+    sino
+      si (id=2)
+        EnviarMensaje(ok,r1)
+        EnviarMensaje(ok,r3)
+      sino
+        EnviarMensaje(ok,r1)
+        EnviarMensaje(ok,r2)
+    repetir 2
+      RecibirMensaje(ok,*)
+  fin
+  
+  robot fiscalizador
+  comenzar
+    enviarID
+  fin
+{--PROGRAMA PRINCIPAL--}
+variables
+  r1: recolector
+  r2: recolector
+  r3: recolector
+  rJ:fiscalizador
+comenzar
+{--ASIGNAR AREAS--}
+  AsignarArea(r1,AreaAv1)
+  AsignarArea(r2,AreaAv2)
+  AsignarArea(r3,AreaAv3)
+  AsignarArea(rJ,AreaJefe)
+  
+{--INICIALIZACION--}
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,1)
+  Iniciar(r3,3,1)
+  Iniciar(rJ,4,1)
+fin
+
+
+{parcialVirtual - CORREGIDO}
+programa parcialVirtual 
+procesos
+  {ENVIA LOS IDENTIFICADORES A LOS ROBOTS}
+  proceso enviarID
+  comenzar
+    EnviarMensaje (1, r1)
+    EnviarMensaje (2, r2)
+    EnviarMensaje (3, r3)
+    EnviarMensaje (4, r4)
+  fin
+
+  {JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+
+  {JUNTA TODOS LOS PAPELES DE UNA ESQUINA}
+  proceso juntarPapeles (ES cantP: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantP := cantP + 1
+  fin
+  proceso recorridoFlorero(ES cantF:numero)
+  variables
+    av,pasos:numero
+  comenzar
+    pasos:=0
+    derecha
+    repetir 4
+      juntarFlores(cantF)
+      mover
+      pasos:=pasos+1
+      av:=PosAv
+      si(pasos = 4)
+        BloquearEsquina(av+1,12)
+        juntarFlores(cantF)
+        mover
+        juntarFlores(cantF)
+        mover
+        LiberarEsquina(av+1,12)
+    repetir 4
+      juntarFlores(cantF)
+      mover
+  fin
+  
+  proceso recorridoPapelero(ES cantP:numero)
+  variables
+    av, pasos:numero
+  comenzar
+    pasos:=0
+    repetir 7
+      juntarPapeles(cantP)
+      mover
+      pasos:=pasos+1
+      av:=PosAv
+      si(pasos = 7)
+        BloquearEsquina(av+1,12)
+        juntarPapeles(cantP)
+        mover
+        juntarPapeles(cantP)
+        mover
+        LiberarEsquina(av+1,12)
+    repetir 11
+      juntarPapeles(cantP)
+      mover
+  fin
+areas
+  areaEquipoAzul: AreaPC(2,4,12,24)
+  areaEquipoVerde: AreaPC(16,4,26,24)
+  areaJefe: AreaP(1,1,1,1)
+robots
+  robot florero
+  variables
+    id,cantF:numero 
+  comenzar
+    cantF:=0
+    RecibirMensaje(id,rJefe)
+    recorridoFlorero(cantF)
+    EnviarMensaje(id,rJefe)
+    EnviarMensaje(cantF,rJefe)
+  fin
+  
+  robot papelero
+  variables
+    id,cantP:numero 
+  comenzar
+    cantP:=0
+    RecibirMensaje(id,rJefe)
+    recorridoPapelero(cantP)
+    EnviarMensaje(id,rJefe)
+    EnviarMensaje(cantP,rJefe)
+  fin
+  
+  robot fiscalizador
+  variables
+    id,cantF,cantP,totalAzul,totalVerde:numero
+    ok:boolean
+  comenzar
+    totalAzul:=0
+    totalVerde:=0
+    enviarID
+    repetir 4
+      RecibirMensaje (id, *)
+      si (id = 1)
+        RecibirMensaje (cantF, r1)
+        totalAzul:=totalAzul+cantF
+      sino
+        si (id = 2)
+          RecibirMensaje (cantP, r2)
+          totalAzul:=totalAzul+cantP
+        sino
+          si (id = 3)
+            RecibirMensaje (cantF, r3)
+            totalVerde:=totalVerde+cantF
+          sino { si ( id = 4) }
+            RecibirMensaje (cantP, r4)
+            totalVerde:=totalVerde+cantP
+            
+    si(totalAzul>totalVerde) 
+      Informar('GANO_AZUL',totalAzul)
+    sino
+      si (totalAzul<totalVerde)
+        Informar('GANO_VERDE',totalVerde)
+      sino
+        Informar('EMPATE',0)
+  fin
+
+{--- PROGRAMA PRINCIPAL ---}
+variables 
+  r1: florero
+  r2: papelero
+  r3: florero
+  r4: papelero
+  
+  rJefe: fiscalizador
+comenzar 
+  AsignarArea (r1, areaEquipoAzul)
+  AsignarArea (r2, areaEquipoAzul)
+  AsignarArea (r3, areaEquipoVerde)
+  AsignarArea (r4, areaEquipoVerde)
+  AsignarArea (rJefe, areaJefe)
+
+
+  Iniciar (r1,2,12)
+  Iniciar (r2,7,4)
+  Iniciar (r3,16,12)
+  Iniciar (r4,21,4)
+  Iniciar (rJefe,1,1)
+fin
+{ejercicio02P5✅ arreglado {quedaban flores en la bolsa de los robots}}
+programa ejercicio02P5✅ arreglado {quedaban flores en la bolsa de los robots}
+procesos
+  {ENVIAR ID A LOS ROBOTS}
+  proceso enviarID
+  comenzar
+    EnviarMensaje (1, r1)
+    EnviarMensaje (2, r2)
+    EnviarMensaje (3, r3)
+  fin
+
+{JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+  
+  proceso llevarFlores(ES cantF:numero)
+  variables
+    av,ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    depositarFlor
+    Pos(av,ca)
+    LiberarEsquina(50,50)
+  fin
+  proceso recorrerCalle(ES cantF:numero)
+  comenzar
+    derecha
+    mientras(PosAv < 100)
+      cantF:=0
+      si PosAv=1
+        repetir 9
+          juntarFlores(cantF)
+          mover
+      sino
+        repetir 10
+          juntarFlores(cantF)
+          mover
+      repetir cantF
+        llevarFlores(cantF)
+      
+  fin
+
+areas
+  areaR1: AreaP(1,1,100,1)
+  areaR2: AreaP(1,2,100,2)
+  areaR3: AreaP(1,3,100,3)
+  areaRecoleccion: AreaC(50,50,50,50)
+  areaJefe: AreaP(1,4,1,4)
+robots
+  robot recolector
+  variables
+    id,cantF:numero
+    ok:boolean
+  comenzar
+    cantF:=0
+    ok:= V
+    RecibirMensaje(id,rJefe)
+    recorrerCalle(cantF)
+    si (id = 1)
+      EnviarMensaje(ok,r2)
+      EnviarMensaje(ok,r3)
+    sino
+      si (id = 2)
+        EnviarMensaje(ok,r1)
+        EnviarMensaje(ok,r3)
+      sino
+        EnviarMensaje(ok,r1)
+        EnviarMensaje(ok,r2) 
+    repetir 2
+      RecibirMensaje(ok,*)
+    EnviarMensaje(id,rJefe)
+    EnviarMensaje(ok,rJefe)  
+  fin
+  
+  robot fiscalizador
+  variables
+    cantF:numero
+    ok:boolean
+  comenzar
+    cantF:=0
+    enviarID
+    repetir 3
+      RecibirMensaje(ok,*)
+     {no es necesario bloquearla ya que hasta no tener los 3 ok no podría ir}
+    Pos(50,50)
+    juntarFlores(cantF)
+    Informar('flores_juntadas',cantF)
+  fin
+
+{--- PROGRAMA PRINCIPAL ---}
+variables 
+  r1: recolector
+  r2: recolector
+  r3: recolector
+  
+  rJefe: fiscalizador
+comenzar 
+  AsignarArea (r1, areaR1)
+  AsignarArea (r2, areaR2)
+  AsignarArea (r3, areaR3)
+  AsignarArea (r1, areaRecoleccion)
+  AsignarArea (r2, areaRecoleccion)
+  AsignarArea (r3, areaRecoleccion)
+  AsignarArea (rJefe, areaJefe)
+  AsignarArea (rJefe, areaRecoleccion)
+
+  Iniciar (r1,1,1)
+  Iniciar (r2,1,2)
+  Iniciar (r3,1,3)
+  Iniciar (rJefe,1,4)
+fin
+
+{ejercicio01P5✅ este para mi ta bien, lo probé con muchas trampitas y anda ahre
+procesos}
+programa ejercicio01P5 este para mi ta bien, lo probé con muchas trampitas y anda ahre
+procesos
+  {ENVIA LOS IDENTIFICADORES A LOS ROBOTS}
+  proceso enviarID
+  comenzar
+    EnviarMensaje (1, r1)
+    EnviarMensaje (2, r2)
+    EnviarMensaje (3, a1)
+    EnviarMensaje (4, a2)
+  fin
+
+  proceso juntarFlores(ES cantF:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantF:= cantF + 1
+  fin
+  
+  proceso juntarPapeles(ES cantP:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantP:= cantP + 1
+  fin
+  
+  proceso recorrerAvenidaFlores(ES cantF:numero)
+  variables
+    av:numero
+  comenzar
+    av:=PosAv
+    mientras(PosCa < 97)
+      juntarFlores(cantF)
+      mover
+    juntarFlores(cantF)
+    BloquearEsquina(av,98)
+    mover
+    juntarFlores(cantF)
+    BloquearEsquina(av,99)
+    mover
+    LiberarEsquina(av,98)
+    juntarFlores(cantF)
+    mover
+    LiberarEsquina(av,99)
+    juntarFlores(cantF)
+  fin
+  
+  proceso recorrerCallePapeles(ES cantP:numero)
+  variables
+    av,ca:numero
+  comenzar
+    ca:=PosCa
+    derecha
+    juntarPapeles(cantP)
+    BloquearEsquina(2,ca)
+    mover
+    juntarPapeles(cantP)
+    BloquearEsquina(3,ca)
+    mover
+    LiberarEsquina(2,ca)
+    juntarPapeles(cantP)
+    mover
+    LiberarEsquina(3,ca)
+    mientras(PosAv < 100)
+      juntarPapeles(cantP)
+      mover
+    juntarPapeles(cantP)
+  fin
+  
+areas
+  areaRojo1a: AreaP(2,1,2,97)
+  areaRojo1b: AreaP(2,100,2,100)
+  areaRojo2a: AreaP(3,1,3,97)
+  areaRojo2b: AreaP(3,100,3,100)
+  
+  areaEncuentro1: AreaPC(2,98,2,98)
+  areaEncuentro2: AreaPC(2,99,2,99)
+  areaEncuentro3: AreaPC(3,98,3,98)
+  areaEncuentro4: AreaPC(3,99,3,99)
+  
+  areaAzul1a:AreaP(1,98,1,98)
+  areaAzul1b:AreaP(4,98,100,98)
+  areaAzul2a:AreaP(1,99,1,99)
+  areaAzul2b:AreaP(4,99,100,99)
+  
+  areaJefe: AreaP(1,1,1,1)
+robots
+  robot rFlorero
+  variables
+    id,cantF:numero
+  comenzar
+    cantF:= 0
+    RecibirMensaje(id,rJefe)
+    recorrerAvenidaFlores(cantF)
+    EnviarMensaje(id,rJefe)
+    EnviarMensaje(cantF,rJefe)
+  fin
+  
+  robot rPapelero
+  variables
+    id,cantP:numero
+  comenzar
+    cantP:= 0
+    RecibirMensaje(id,rJefe)
+    recorrerCallePapeles(cantP)
+    EnviarMensaje(id,rJefe)
+    EnviarMensaje(cantP,rJefe)
+  fin
+  
+  robot fiscalizador
+  variables
+    id,cantF,cantP,totalF,totalP:numero
+  comenzar
+    totalF:= 0
+    totalP:= 0
+    enviarID
+    repetir 4
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(cantF,r1)
+        totalF:= totalF + cantF
+      sino
+        si(id = 2)
+          RecibirMensaje(cantF,r2)
+          totalF:= totalF + cantF
+        sino
+          si(id = 3)
+            RecibirMensaje(cantP,a1)
+            totalP:= totalP + cantP
+          sino
+            RecibirMensaje(cantP,a2)
+            totalP:= totalP + cantP
+    si(totalF > totalP)           
+      Informar('GANO_ROJO',totalF)
+    sino
+      si(totalF < totalP)
+        Informar('GANO_AZUL',totalP)
+      sino
+        Informar('EMPATE',0)
+  fin
+{--PROGRAMA PRINCIPAL--}
+variables
+  r1: rFlorero
+  r2: rFlorero
+  a1: rPapelero
+  a2: rPapelero
+  rJefe: fiscalizador
+comenzar
+  {ASIGNAR AREAS}
+  AsignarArea(r1,areaRojo1a)
+  AsignarArea(r1,areaEncuentro1)
+  AsignarArea(r1,areaEncuentro2)
+  AsignarArea(r1,areaRojo1b)
+  AsignarArea(r2,areaRojo2a)
+  AsignarArea(r2,areaEncuentro3)
+  AsignarArea(r2,areaEncuentro4)
+  AsignarArea(r2,areaRojo2b)
+  
+  AsignarArea(a1,areaAzul1a)
+  AsignarArea(a1,areaAzul1b)
+  AsignarArea(a1,areaEncuentro1)
+  AsignarArea(a1,areaEncuentro3)
+  AsignarArea(a2,areaAzul2a)
+  AsignarArea(a2,areaAzul2b)
+  AsignarArea(a2,areaEncuentro2)
+  AsignarArea(a2,areaEncuentro4)
+  
+  AsignarArea(rJefe,areaJefe)
+  
+  {INICIALIZACION}
+  Iniciar(r1,2,1)
+  Iniciar(r2,3,1)
+  Iniciar(a1,1,98)
+  Iniciar(a2,1,99)
+  Iniciar(rJefe,1,1)
+fin
+
+{ejercicio05P5 ✅}
+programa ejercicio05P5 ✅
+procesos
+  {ENVIA ID LOS ROBOTS}
+  proceso enviarID
+  comenzar
+    EnviarMensaje (1, r1)
+    EnviarMensaje (2, r2)
+    EnviarMensaje (3, r3)
+  fin
+  
+ {JUNTA UN PAPEL DE LA ESQUINA}
+  proceso juntarPapel
+  comenzar
+    si(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+
+areas
+  areaRecoleccion: AreaC(100,1,100,1)
+  areaServidor: AreaP(13,1,13,1)
+ 
+  AreaInicio1: AreaP(10,1,10,1)
+  AreaInicio2: AreaP(11,1,11,1)
+  AreaInicio3: AreaP(12,1,12,1)
+    
+robots
+  robot cliente
+  variables
+    id,cantP,cantIntentos,av,ca:numero
+    termine,solicitud:boolean
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    RecibirMensaje(id,rServidor)
+    repetir 4
+      EnviarMensaje(id,rServidor)
+      RecibirMensaje(cantP,rServidor)
+      repetir cantP 
+        BloquearEsquina(100,1)
+        Pos(100,1)
+        juntarPapel
+        Pos(av,ca)
+        LiberarEsquina(100,1)
+        depositarPapel
+  fin
+  
+  robot servidor
+  variables
+    id,cantP,av,ca:numero
+    ok,solicitud:boolean
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    enviarID
+    repetir 12
+      RecibirMensaje(id,*)
+      Random(cantP,1,5)
+      BloquearEsquina(100,1)
+      Pos(100,1)
+      repetir cantP
+        depositarPapel
+      Pos(av,ca)
+      LiberarEsquina(100,1)
+      si(id = 1)
+        EnviarMensaje(cantP,r1)
+      sino
+        si(id = 2)
+          EnviarMensaje(cantP,r2)
+        sino
+          EnviarMensaje(cantP,r3)
+  fin
+variables
+  r1: cliente
+  r2: cliente
+  r3: cliente
+  rServidor: servidor
+comenzar
+{ASIGNAR AREAS}
+  AsignarArea(r1,AreaInicio1)
+  AsignarArea(r1,areaRecoleccion)
+
+  
+  AsignarArea(r2,AreaInicio2)
+  AsignarArea(r2,areaRecoleccion)
+  
+  AsignarArea(r3,AreaInicio3)
+  AsignarArea(r3,areaRecoleccion)
+  
+  AsignarArea(rServidor,areaServidor)
+  AsignarArea(rServidor,areaRecoleccion)
+
+{INICIALIZACION}
+  Iniciar(r1,10,1)
+  Iniciar(r2,11,1) 
+  Iniciar(r3,12,1)
+  Iniciar(rServidor,13,1)
+fin
+
+{ejercicio04P5✅}
+programa ejercicio04P5✅
+procesos
+  {ENVIA ID LOS ROBOTS}
+  proceso enviarID
+  comenzar
+    EnviarMensaje (1, r1)
+    EnviarMensaje (2, r2)
+    EnviarMensaje (3, r3)
+  fin
+  
+ {JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+  
+  proceso depositarFlores(E av:numero;E ca:numero;E cantF:numero)
+  comenzar
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir cantF
+      depositarFlor
+    Pos(av,ca)
+    LiberarEsquina(10,10)
+  fin
+  
+areas
+  areaRecoleccion: AreaPC(40,40,60,60)
+  areaJefe: AreaP(4,1,4,1)
+  areaDeposito: AreaC(10,10,10,10)
+  AreaInicio1: AreaP(1,1,1,1)
+  AreaInicio2: AreaP(2,1,2,1)
+  AreaInicio3: AreaP(3,1,3,1)
+    
+robots
+  robot recolector
+  variables
+    id,cantF,av,ca,avR,caR:numero
+    termine,seguir:boolean
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    cantF:= 0
+    RecibirMensaje(id,rJefe)
+    RecibirMensaje(seguir,rJefe)
+    mientras(seguir){recibir desde el jefe que siga buscando florcitas}
+      RecibirMensaje(avR,rJefe)
+      RecibirMensaje(caR,rJefe)
+      BloquearEsquina(avR,caR)
+      Pos(avR,caR)
+      juntarFlores(cantF)
+      Pos(av,ca)
+      LiberarEsquina(avR,caR)
+      RecibirMensaje(seguir,rJefe)
+    depositarFlores(av,ca,cantF)
+    EnviarMensaje(cantF ,rJefe)
+  fin
+  
+  robot fiscalizador
+  variables
+    id,cantF,bot,total,avR,caR:numero
+    ok:boolean
+  comenzar
+    ok:= V
+    total:= 0
+    enviarID
+    repetir 8
+      Random(avR,40,60)
+      Random(caR,40,60)
+      Random(bot,1,3)
+      si(id = 1)
+        EnviarMensaje(ok,r1)
+        EnviarMensaje(avR,r1)
+        EnviarMensaje(caR,r1)
+      sino
+        si(id = 2)
+          EnviarMensaje(ok,r2)
+          EnviarMensaje(avR,r2)
+          EnviarMensaje(caR,r2)
+        sino
+          EnviarMensaje(ok,r3)
+          EnviarMensaje(avR,r3)
+          EnviarMensaje(caR,r3)
+    EnviarMensaje(F,r1)
+    EnviarMensaje(F,r2)
+    EnviarMensaje(F,r3)
+    repetir 3
+      RecibirMensaje(cantF,*)
+      total:=total+cantF
+    Informar('total_recolectado',total)
+  fin
+variables
+  r1: recolector
+  r2: recolector
+  r3: recolector
+  rJefe: fiscalizador
+comenzar
+{ASIGNAR AREAS}
+  AsignarArea(r1,AreaInicio1)
+  AsignarArea(r1,areaRecoleccion)
+  AsignarArea(r1,areaDeposito)
+  
+  AsignarArea(r2,AreaInicio2)
+  AsignarArea(r2,areaRecoleccion)
+  AsignarArea(r2,areaDeposito)
+  
+  AsignarArea(r3,AreaInicio3)
+  AsignarArea(r3,areaRecoleccion)
+  AsignarArea(r3,areaDeposito)
+  
+  AsignarArea(rJefe,areaJefe)
+  AsignarArea(rJefe,areaDeposito)
+
+{INICIALIZACION}
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,1) 
+  Iniciar(r3,3,1)
+  Iniciar(rJefe,4,1)
+fin
+
+{ejercicio03P5✅}
+programa ejercicio03P5✅
+procesos
+  proceso juntarFlor(ES cantF:numero;ES cantF2:numero)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      cantF:= cantF+1
+      cantF2:= cantF2+1
+  fin
+  
+  proceso depositarFlores
+  variables
+    av,ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    depositarFlor
+    Pos(av,ca)
+    LiberarEsquina(10,10)
+  fin
+    
+  proceso recorrerCalle
+  variables
+    cantPasos, cantF, cantF2:numero
+    ok : boolean
+  comenzar
+    derecha
+    ok := V
+    cantPasos:=0
+    cantF:=0 {reiniciable}
+    cantF2:=0 {bolsa}
+    mientras (PosAv < 100)
+      mientras((cantF < 10) & (cantPasos < 5) & (PosAv < 100))
+        juntarFlor(cantF,cantF2)
+        mover
+        cantPasos:= cantPasos + 1
+      repetir cantF2
+        depositarFlores
+      cantF2:=0
+      EnviarMensaje(ok,rCosechador)
+      si (cantF = 10)
+        cantF:=0
+      si (cantPasos = 5)
+        cantPasos:=0
+  fin
+  proceso recolectarFlores(ES cantF:numero)
+  variables
+    av,ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF:=cantF+1
+    Pos(av,ca)
+    LiberarEsquina(10,10)
+  fin
+areas
+  area3: AreaP(1,3,100,3)
+  area4: AreaP(1,4,100,4)
+  areaDeposito: AreaP(10,10,10,10)
+  areaCosechador: AreaP(1,5,1,5)
+robots
+  robot sembrador
+  variables
+    cantF,termino:numero
+    ok:boolean
+  comenzar
+    cantF:=0
+    ok:= F
+    recorrerCalle
+    EnviarMensaje(ok,rCosechador)
+  fin
+
+  robot cosechador
+  variables
+    ok:boolean
+    id,cantF,terminaron:numero
+  comenzar
+    cantF:=0
+    terminaron:= 0
+    mientras(terminaron < 2)
+      RecibirMensaje(ok,*)
+      si(ok)
+        recolectarFlores(cantF)
+      sino
+        terminaron:=terminaron + 1
+    Informar('TOTAL_FLORES',cantF)
+  fin
+
+{--- PROGRAMA PRINCIPAL ---}
+variables 
+  r1: sembrador
+  r2: sembrador
+  rCosechador: cosechador
+comenzar
+  AsignarArea (r1, area3)
+  AsignarArea (r1, areaDeposito)
+  AsignarArea (r2, area4)
+  AsignarArea (r2, areaDeposito)
+  AsignarArea (rCosechador, areaDeposito)
+  AsignarArea (rCosechador, areaCosechador)
+
+  Iniciar (r1,1,3)
+  Iniciar (r2,1,4)
+  Iniciar (rCosechador,1,5)
+fin
+
+{parcial110423✅}
+programa parcial110423
+procesos
+  {ENVIO ID A CADA ROBOT}
+  proceso enviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+  
+  proceso enviarTamanio
+  variables
+    id,alto,ancho: numero
+  comenzar
+    id:=0
+    repetir 3
+      id:=id+1
+      Random(alto,1,11)
+      Random(ancho,1,5)
+      si(id=1)
+        EnviarMensaje(alto,r1)
+        EnviarMensaje(ancho,r1)
+      sino
+        si(id=2)
+          EnviarMensaje(alto,r2)
+          EnviarMensaje(ancho,r2)
+        sino
+          EnviarMensaje(alto,r3)
+          EnviarMensaje(ancho,r3)
+  fin
+  {JUNTA TODAS LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+  proceso recorrerAreaAsignada(E alto:numero; E ancho:numero; ES cantF:numero)
+  comenzar
+    repetir 2
+      repetir alto
+        juntarFlores(cantF)
+        mover
+      derecha
+      repetir ancho
+        juntarFlores(cantF)
+        mover
+      derecha
+  fin
+
+  proceso depositarFlores
+  variables
+    av,ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    BloquearEsquina(25,25)
+    Pos(25,25)
+    depositarFlor
+    Pos(av,ca)
+    LiberarEsquina(25,25)
+  fin
+  
+areas
+  areaJefe: AreaP(24,24,24,24)
+  area1: AreaP(1,1,6,11)
+  area2: AreaP(7,1,12,11)
+  area3: AreaP(13,1,18,11)
+  areaDeposito: AreaPC(25,25,25,25)
+robots
+  robot recolector
+  variables
+    id,cantF,alto,ancho: numero
+  comenzar
+    cantF:=0
+    RecibirMensaje(id,rJefe)
+    RecibirMensaje(alto,rJefe)
+    RecibirMensaje(ancho,rJefe)
+    recorrerAreaAsignada(alto,ancho,cantF)
+    repetir cantF
+      depositarFlores
+    EnviarMensaje(id,rJefe)
+    EnviarMensaje(cantF,rJefe)
+  fin
+
+  robot fiscalizador
+  variables
+    id,cantF,max,maxID: numero
+  comenzar
+    max:=-1
+    enviarID
+    enviarTamanio
+    repetir 3
+      RecibirMensaje(id,*)
+      si(id = 1)
+        RecibirMensaje(cantF,r1)
+        si (cantF>max)
+          max:=cantF
+          maxID:=id
+      sino
+        si(id = 2)
+          RecibirMensaje(cantF,r2)
+          si (cantF>max)
+            max:=cantF
+            maxID:=id
+        sino
+          RecibirMensaje(cantF,r3)
+          si (cantF>max)
+            max:=cantF
+            maxID:=id
+    Informar('ID_MAX',maxID)
+  fin
+
+{--- PROGRAMA PRINCIPAL ---}
+variables 
+  r1:recolector
+  r2:recolector
+  r3:recolector
+  rJefe: fiscalizador
+comenzar 
+  AsignarArea (r1, area1)
+  AsignarArea (r2, area2)
+  AsignarArea (r3, area3)
+  AsignarArea (rJefe, areaJefe)
+  AsignarArea (r1, areaDeposito)
+  AsignarArea (r2, areaDeposito)
+  AsignarArea (r3, areaDeposito)
+  
+  Iniciar (r1,1,1)
+  Iniciar (r2,7,1)
+  Iniciar (r3,13,1)
+  Iniciar (rJefe,24,24)
+fin
+{parcial120623✅}
+programa parcial120623
+procesos
+  proceso enviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+  fin
+  proceso juntarFlores(ES cantF:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantF:=cantF + 1
+  fin
+  
+  proceso juntarPapeles(ES cantP:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantP:= cantP + 1
+  fin
+  
+  proceso recorrerLado(ES cantF: numero)
+  comenzar
+    repetir 4 
+      juntarFlores(cantF)
+      mover
+    juntarFlores(cantF) 
+  fin
+  proceso recorrerLado2(ES cantF: numero)
+  variables
+    ca:numero
+  comenzar
+    derecha
+    repetir 4
+      juntarFlores(cantF)
+      mover
+    derecha
+    repetir 3
+      juntarFlores(cantF)
+      mover
+    ca:=PosCa
+    BloquearEsquina(PosAv,ca-1)
+    juntarFlores(cantF)
+    mover
+    juntarFlores(cantF)
+    derecha
+    mover
+    LiberarEsquina(PosAv + 1,ca-1)
+    repetir 3
+      juntarFlores(cantF)
+      mover
+    derecha
+  fin
+  
+  proceso recorrerLadoB(ES cantP: numero)
+  variables
+    ca:numero
+  comenzar
+    repetir 3
+      juntarPapeles(cantP)
+      mover
+    ca:=PosCa
+    juntarPapeles(cantP)
+    BloquearEsquina(PosAv,ca+1)
+    mover
+    juntarPapeles(cantP)
+    derecha
+    mover
+    LiberarEsquina(PosAv-1,ca+1)
+    juntarPapeles(cantP)
+    repetir 3
+      juntarPapeles(cantP)
+      mover
+  fin
+  proceso recorrerLadoB2(ES cantP: numero)
+  comenzar
+    derecha
+    repetir 4
+      juntarPapeles(cantP)
+      mover
+    juntarPapeles(cantP)
+    derecha
+    mover
+    repetir 3
+      juntarPapeles(cantP)
+      mover
+    derecha
+  fin
+  
+areas
+  area1: AreaPC(5,7,13,15)
+  area2: AreaPC(15,7,23,15)
+  area3: AreaPC(25,7,33,15)
+  
+  areaInicio1: AreaP(2,2,2,2)
+  areaInicio2: AreaP(3,3,3,3)
+  
+  areaJefe: AreaP(1,1,1,1)
+robots
+  robot florero
+  variables
+    id, cantF:numero
+    ok:boolean
+  comenzar
+    cantF:= 0
+    RecibirMensaje(id, rJefe)
+    Pos(5,11)
+    recorrerLado(cantF)
+    recorrerLado2(cantF)
+    EnviarMensaje(id,rJefe)
+    RecibirMensaje(ok, rJefe)
+    repetir 2
+      Pos(PosAv+10, 11) 
+      recorrerLado(cantF)
+      recorrerLado2(cantF)
+      EnviarMensaje(id,rJefe)
+      RecibirMensaje(ok, rJefe)
+  fin
+  
+  robot papelero
+  variables
+    id, cantP:numero
+    ok:boolean
+  comenzar
+    cantP:= 0
+    RecibirMensaje(id, rJefe)
+    Pos(9,7)
+    recorrerLadoB(cantP)
+    recorrerLadoB2(cantP)
+    EnviarMensaje(id,rJefe)
+    RecibirMensaje(ok,rJefe)
+    repetir 2
+      Pos(PosAv+10, 7) 
+      recorrerLadoB(cantP)
+      recorrerLadoB2(cantP)
+      EnviarMensaje(id,rJefe)
+      RecibirMensaje(ok,rJefe)
+  fin
+  
+  robot fiscalizador
+  variables
+    id:numero
+    ok:boolean
+  comenzar
+    enviarID
+    repetir 3
+      RecibirMensaje(id,*)
+      Informar('llego',id)
+      RecibirMensaje(id,*)
+      EnviarMensaje(ok, r1)
+      EnviarMensaje(ok, r2)
+  fin
+{--PROGRAMA PRINCIPAL--}
+variables
+  r1:florero
+  r2: papelero
+  rJefe: fiscalizador
+comenzar
+  {ASIGNAR AREAS}
+  AsignarArea(r1,area1)
+  AsignarArea(r1,area2)
+  AsignarArea(r1,area3)
+  AsignarArea(r1,areaInicio1)
+  AsignarArea(r2,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r2,area3)
+  AsignarArea(r2,areaInicio2)
+  AsignarArea(rJefe, areaJefe)
+  {INICIALIZACION}
+  Iniciar(r1,2,2)
+  Iniciar(r2,3,3)
+  Iniciar(rJefe,1,1)
+fin
